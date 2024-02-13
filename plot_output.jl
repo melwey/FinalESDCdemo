@@ -6,7 +6,7 @@ using Statistics
 # rechunked mesogeos cube
 input = open_dataset("/Net/Groups/BGI/work_3/scratch/fgans/DeepCube/UC3Cube_rechunked2.zarr");
 # output of moving windo demo
-ds = open_dataset("output.zarr/")
+ds = open_dataset("/Net/Groups/BGI/people/fgans/DeepCube/FinalESDCDEmo/output.zarr/")
 
 preds = ("lst_night", "lst_day","dem", "lc_forest", "lc_grassland", "roads_distance")
 units = ("Temperature [Kelvin]","Temperature [Kelvin]","Elevation [m]", "Forest cover [%]", "Grass cover [%]", "Distance to nearest road [km]")
