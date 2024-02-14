@@ -2,6 +2,7 @@
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 ClusterManagers = "34f1f09b-3a8b-5176-ab39-66d58a4d544e"
 GeoMakie = "db073c08-6b98-4ee5-b6a4-5efafb3259c6"
+HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 OnlineStats = "a15396b6-48d5-5d58-9928-6d29437db91e"
 PerceptualColourMaps = "54e51dfa-9dd7-5231-aa84-a4037b83483a"
