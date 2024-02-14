@@ -4,8 +4,6 @@ using YAXArrays.Cubes: cubesize, formatbytes
 #Open the time series cube
 ds = open_dataset("/Net/Groups/BGI/work_3/scratch/fgans/DeepCube/UC3Cube_rechunked2.zarr");
 
-ds.
-
 #Select variables of interest
 burned_area = ds.burned_areas;
 preds = ("lst_night", "lst_day","dem", "lc_forest", "lc_grassland", "roads_distance")
