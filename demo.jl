@@ -1,3 +1,4 @@
+using Pkg; Pkg.activate(".")
 using YAXArrays, Zarr
 using OnlineStats: Mean, value, fit!, nobs
 using YAXArrays.Cubes: cubesize, formatbytes
@@ -31,14 +32,14 @@ threads_per_worker = 16
 #Get 20 workers with 32 cpus per worker
 using ClusterManagers: SlurmManager
 using Distributed
-for i in 1:20
+for i in 1:n_workers
     Threads.@spawn begin
         addprocs(
             SlurmManager(1,fill(2.0,10)),
             partition="big",
             mem_per_cpu="16GB",
             time="00:30:00",
-            cpus_per_task=16,
+            cpus_per_task=threads_per_worker,
             exeflags=`--project=$(@__DIR__) -t 32 --heap-size-hint=8GB`
         )
     end
@@ -61,12 +62,12 @@ mapCube(
     max_cache=2e9,
 )
 
-rmprocs(5)
+rmprocs(workers())
 
-using CairoMakie, Makie, GeoMakie
-using YAXArrays, Zarr
-ds = open_dataset("output.zarr/")
-heatmap(ds.roads_distance,colormap=:bluesreds)
+# using CairoMakie, Makie, GeoMakie
+# using YAXArrays, Zarr
+# ds = open_dataset("output.zarr/")
+# heatmap(ds.roads_distance,colormap=:bluesreds)
 
 
 # ilon = 1000
