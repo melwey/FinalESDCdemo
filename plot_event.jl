@@ -41,4 +41,4 @@ meshscatter!(ax, points3d[:]; color = data_vec[:],
 ax.yticks = (y_ticks_pos, ticks_time)
 ax.xlabeloffset = 50
 fig
-save("fire_demo.png", fig)
+save("plot_event.png", fig)
