@@ -6,34 +6,39 @@ input = open_dataset("/Net/Groups/BGI/work_3/scratch/fgans/DeepCube/UC3Cube_rech
 
 # plot extreme event
 input_burnt = input[:burned_areas]
-time = lookup(input_burnt, 3);
+tempo = lookup(input_burnt, 3)
 # subset around (20,40,2321)
-c = input_burnt[x = 20 .. 20.1, y = 39.9 .. 40, time = time[2310] .. time[2330]]
+c = input_burnt[x = 20 .. 20.1, y = 39.9 .. 40, time = tempo[2310] .. tempo[2330]]
+
 lon = lookup(c, :x);
 lat = lookup(c, :y);
-time = lookup(c, 3);
-data = permutedims(c.data[:,:,:], (1,3,2));
-# there should be some non null data at data[:,11,:]
+δlon = abs(lon[2] - lon[1])
+δlat = abs(lat[2] - lat[1])
+tempo_cut = lookup(c, :Ti);
+data_cut = c.data[:,:,:]
 
-colmap = :bluesreds
-n = 3;
-g(x) = x;
-alphas = [g(x) for x in range(0, 1, length = n)];
-cmap_alpha = resample_cmap(colmap, n; alpha = alphas)
+colormap = [(:grey9, 0.02), (:orangered, 0.8)]
 
-points3d = [Point3f(ix, iz, iy) for ix in lon, iz in 1:length(time), iy in lat];
+points3d = [Point3f(ix, iz, iy) for ix in lon, iz in 1:length(tempo_cut), iy in lat];
+data_vec = [data_cut[ix, iy, iz] for (ix, i) in enumerate(lon), (iz, k) in enumerate(tempo_cut), (iy, j) in enumerate(lat)]
+
+y_ticks_pos = [1,5,10,15,20]
+ticks_time = string.(Date.(tempo_cut[y_ticks_pos]))
 
 fig = Figure();
 ax = Axis3(fig[1, 1], 
-    # perspectiveness = 0.5,
+    perspectiveness = 0.5,
     azimuth = 6.64,
     elevation = 0.57, aspect = (1, 2, 1),
     xlabel = "Longitude", ylabel = "Time", zlabel = "Latitude");
-meshscatter!(ax, vec(points3d); color = vec(data), 
+meshscatter!(ax, points3d[:]; color = data_vec[:], 
     colorrange = (0,1),    
-    colormap = cmap_alpha,
+    colormap,
     marker=Rect3f(Vec3f(-0.5), Vec3f(1)),
-    markersize=0.9,
+    markersize=Vec3f(δlon - 0.15*δlon, 0.85, δlat -0.15δlat),
+    transparency=true
     )
+ax.yticks = (y_ticks_pos, ticks_time)
+ax.xlabeloffset = 50
 fig
-
+save("plot_event.png", fig)
