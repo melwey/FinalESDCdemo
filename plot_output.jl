@@ -23,17 +23,17 @@ x1 = tmp["lon"];
 y1 = tmp["lat"];
 
 # colormap
-n = 128
-colormap = vcat(resample_cmap(:linear_kbc_5_95_c73_n256, n),
-    resample_cmap(Reverse(:linear_kryw_5_100_c67_n256), n))
-
+# n = 128
+# colormap = vcat(resample_cmap(:linear_kbc_5_95_c73_n256, n),
+#     resample_cmap(Reverse(:linear_kryw_5_100_c67_n256), n))
+colormap = cmap("CBD2");    
 
 function myfig!(fig, lon, lat, data, q, units)
     ax = GeoAxis(fig[1,1], limits=(extrema(lon), extrema(lat)))
     s = surface!(ax, lon, lat, data; 
         colorrange=(-maximum(abs.(q)), maximum(abs.(q))),
-        highclip=:black,
-        lowclip=:grey8,
+        # highclip=:black,
+        # lowclip=:grey8,
         #colorscale = sc,
         colormap, nan_color=:grey80,
         shading=NoShading,
